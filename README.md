@@ -1,4 +1,4 @@
-A text component that automatically sets its `fontSize` so that the text expands to fit the `targetHeight` property.
+A React Native text component that sets its fontSize to fill a target height.
 
     const Example() {
       var {height, width} = Dimensions.get('window');
