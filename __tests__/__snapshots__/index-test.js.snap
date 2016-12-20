@@ -1,0 +1,31 @@
+exports[`<FittedText /> renders correctly with initialFontSize 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  ellipsizeMode="tail"
+  style={
+    Object {
+      "backgroundColor": "transparent",
+      "color": "transparent",
+      "fontSize": 50,
+    }
+  }>
+  foo
+</Text>
+`;
+
+exports[`<FittedText /> renders correctly with just targetHeight 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  ellipsizeMode="tail"
+  style={
+    Object {
+      "backgroundColor": "transparent",
+      "color": "transparent",
+      "fontSize": 100,
+    }
+  }>
+  foo
+</Text>
+`;
