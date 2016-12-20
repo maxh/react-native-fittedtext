@@ -1,7 +1,7 @@
 {
   "name": "react-native-fittedtext",
   "version": "1.0.0",
-  "description": "A React Native component that automatically sets fontSize to fill its height.",
+  "description": "A React Native text component that sets it fontSize to match a target height.",
   "main": "index.js",
   "scripts": {
     "test": "jest"
@@ -27,8 +27,7 @@
     "jest": "^18.0.0",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-test-renderer": "^15.4.1",
-    "sinon": "^1.17.6"
+    "react-test-renderer": "^15.4.1"
   },
   "jest": {
     "preset": "react-native"

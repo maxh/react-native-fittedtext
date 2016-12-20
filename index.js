@@ -30,6 +30,10 @@ const makeCancelable = (promise) => {
 };
 
 
+const isNearlyEqual = (a, b, epsilon = .1) => {
+  return (a < b + epsilon) && (a > b - epsilon);
+}
+
 export default class FittedText extends Component {
   constructor(props) {
     super(props);
@@ -53,13 +57,14 @@ export default class FittedText extends Component {
   }
 
   render() {
+    const styleOverrides = {
+      backgroundColor: 'transparent',
+      fontSize: this.state.fontSize,
+      color: this.state.isFitted ? this.props.style.color : 'transparent'
+    };
     return (
-      <Text ref={component => this._text = component}
-            style={{
-              backgroundColor: 'transparent',
-              fontSize: this.state.fontSize,
-              color: this.state.isFitted ? 'black' : 'transparent'
-            }}>
+      <Text ref={component => this.innerText = component}
+            style={[this.props.style, styleOverrides]}>
         {this.props.children}
       </Text>
     )
@@ -75,17 +80,15 @@ export default class FittedText extends Component {
         newFontSize = this.state.fontSize - this.state.interval;
       }
 
-      // TODO: check epsilon to avoid infinite recursion. 
-      if (!newFontSize) {
+      if (!newFontSize || isNearlyEqual(newFontSize, this.state.fontSize)) {
         this.setState({isFitted: true});
-        return;
+        return;  // Base case.
       }
 
       this.setState({
         fontSize: newFontSize,
         interval: this.state.interval / 2
       });
-
       return this.findFit();
     }).catch(e => {
       if (!e.isCanceled) {
@@ -113,7 +116,7 @@ export default class FittedText extends Component {
     }).then(() => {
       return this.createPromise(resolve => {
         UIManager.measureLayoutRelativeToParent(
-          findNodeHandle(this._text),
+          findNodeHandle(this.innerText),
           (e) => console.error(e),
           (x, y, w, h) => {
             resolve(h);
@@ -165,6 +168,6 @@ FittedText.propTypes = {
 
 
 FittedText.defaultProps = {
-  minFillRatio: .75,
+  minFillRatio: .95,
   initialFontSize: 100
 };
