@@ -90,9 +90,8 @@ export default class FittedText extends Component {
 
       // Binary search for the best fontSize.
       const direction = height < this.props.targetHeight ? 1 : -1;
-      const newFontSize = this.state.fontSize + this.state.step * direction;
       this.setState({
-        fontSize: newFontSize,
+        fontSize: this.state.fontSize + this.state.step * direction,
         step: this.state.step / 2
       });
       return this.findFit();
@@ -124,9 +123,7 @@ export default class FittedText extends Component {
         UIManager.measureLayoutRelativeToParent(
           findNodeHandle(this.innerText),
           (e) => console.error(e),
-          (x, y, w, h) => {
-            resolve(h);
-          },
+          (x, y, w, h) => resolve(h)
         );
       });
     });
