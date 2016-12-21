@@ -1,6 +1,10 @@
 A React Native text component that sets its fontSize to fill a target height.
 
-    const Example = () => {
+    import React, { Component } from 'react';
+    import { AppRegistry, Dimensions, Text, View } from 'react-native';
+    import FittedText from 'react-native-fittedtext';
+
+    export default FittedExample = () => {
       var {height, width} = Dimensions.get('window');
       return (
         <View style={{flex: 1}}>
@@ -10,3 +14,5 @@ A React Native text component that sets its fontSize to fill a target height.
         </View>
       );
     }
+
+    AppRegistry.registerComponent('FittedExample', () => FittedExample);
