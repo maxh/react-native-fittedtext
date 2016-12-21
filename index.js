@@ -34,7 +34,7 @@ export default class FittedText extends Component {
   constructor(props) {
     super(props);
     this.findUpperBound = this.findUpperBound.bind(this);
-    this.findFit = this.findFit.bind(this);
+    this.findBestFit = this.findBestFit.bind(this);
     this.state = {
       promises: [],
       isFitted: false,
@@ -46,12 +46,22 @@ export default class FittedText extends Component {
   }
 
   componentDidMount() {
-    return this.findUpperBound().then(this.findFit);
+    return this.findUpperBound().then(this.findBestFit);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.targetHeight != nextProps.targetHeight) {
+      this.clearPromises();
+      this.setState({
+        step: 0,
+        bestSeenFontSize: 0,
+        bestSeenHeight: 0
+      });
+    }
   }
 
   componentWillUnmount() {
-    this.state.promises.forEach(promise => promise.cancel());
-    this.setState({promises: []});
+    this.clearPromises();
   }
 
   render() {
@@ -69,7 +79,7 @@ export default class FittedText extends Component {
     )
   }
 
-  findFit() {
+  findBestFit() {
     return this.getComputedHeightPromise().then(height => {
       if (height <= this.props.targetHeight &&
           height > this.state.bestSeenHeight) {
@@ -94,7 +104,7 @@ export default class FittedText extends Component {
         fontSize: this.state.fontSize + this.state.step * direction,
         step: this.state.step / 2
       });
-      return this.findFit();
+      return this.findBestFit();
     }).catch(e => {
       if (!e.isCanceled) {
         console.error(e);  // Unexpected error.
@@ -127,6 +137,11 @@ export default class FittedText extends Component {
         );
       });
     });
+  }
+
+  clearPromises() {
+    this.state.promises.forEach(promise => promise.cancel());
+    this.setState({promises: []});
   }
 
   createPromise(fn) {
