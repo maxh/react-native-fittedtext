@@ -4,11 +4,14 @@ exports[`<FittedText /> renders correctly with initialFontSize 1`] = `
   allowFontScaling={true}
   ellipsizeMode="tail"
   style={
-    Object {
-      "backgroundColor": "transparent",
-      "color": "transparent",
-      "fontSize": 50,
-    }
+    Array [
+      undefined,
+      Object {
+        "backgroundColor": "transparent",
+        "color": "transparent",
+        "fontSize": 50,
+      },
+    ]
   }>
   foo
 </Text>
@@ -20,11 +23,14 @@ exports[`<FittedText /> renders correctly with just targetHeight 1`] = `
   allowFontScaling={true}
   ellipsizeMode="tail"
   style={
-    Object {
-      "backgroundColor": "transparent",
-      "color": "transparent",
-      "fontSize": 100,
-    }
+    Array [
+      undefined,
+      Object {
+        "backgroundColor": "transparent",
+        "color": "transparent",
+        "fontSize": 100,
+      },
+    ]
   }>
   foo
 </Text>

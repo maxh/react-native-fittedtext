@@ -43,7 +43,7 @@ describe('<FittedText />', () => {
 
     expect(instance.state.fontSize).toBe(100);
     return instance.componentDidMount().then(() => {
-      expect(instance.state.fontSize).toBe(25);
+      expect(instance.state.fontSize).toBe(33.203125);
     })
   });
 
@@ -57,7 +57,7 @@ describe('<FittedText />', () => {
 
     expect(instance.state.fontSize).toBe(5);
     return instance.componentDidMount().then(() => {
-      expect(instance.state.fontSize).toBe(28.125);
+      expect(instance.state.fontSize).toBe(33.28125);
     })
   });
 

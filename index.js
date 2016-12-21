@@ -30,7 +30,7 @@ const makeCancelable = (promise) => {
 };
 
 
-const isNearlyEqual = (a, b, epsilon = .1) => {
+const isNearlyEqual = (a, b, epsilon) => {
   return (a < b + epsilon) && (a > b - epsilon);
 }
 
@@ -43,7 +43,9 @@ export default class FittedText extends Component {
       promises: [],
       isFitted: false,
       fontSize: props.initialFontSize,
-      interval: 0
+      interval: 0,
+      bestSeenFontSize: 0,
+      bestSeenHeight: -1
     };
   }
 
@@ -73,16 +75,28 @@ export default class FittedText extends Component {
 
   findFit() {
     return this.getComputedHeightPromise().then(height => {
+      if (height <= this.props.targetHeight &&
+          height > this.state.bestSeenHeight) {
+        this.setState({
+          bestSeenHeight: height,
+          bestSeenFontSize: this.state.fontSize
+        });
+      }
+
       // Binary search to find a fitting fontSize.
       let newFontSize;
-      if (height < this.props.targetHeight * this.props.minFillRatio) {
+      if (height < this.props.targetHeight) {
         newFontSize = this.state.fontSize + this.state.interval;
       } else if (height > this.props.targetHeight) {
         newFontSize = this.state.fontSize - this.state.interval;
       }
 
-      if (!newFontSize || isNearlyEqual(newFontSize, this.state.fontSize)) {
-        this.setState({isFitted: true});
+      if (isNearlyEqual(
+              newFontSize, this.state.fontSize, this.props.epsilon)) {
+        this.setState({
+          fontSize: this.state.bestSeenFontSize,
+          isFitted: true
+        });
         return;  // Base case.
       }
 
@@ -90,6 +104,7 @@ export default class FittedText extends Component {
         fontSize: newFontSize,
         interval: this.state.interval / 2
       });
+
       return this.findFit();
     }).catch(e => {
       if (!e.isCanceled) {
@@ -102,12 +117,13 @@ export default class FittedText extends Component {
     return this.getComputedHeightPromise().then(height => {
       // Double until the targetHeight is exceeded.
       if (height < this.props.targetHeight) {
-        this.setState({fontSize: height * 2});
+        this.setState({fontSize: this.state.fontSize * 2});
         return this.findUpperBound();
       }
 
       // Then initialize the adjustment interval.
       this.setState({interval: this.state.fontSize / 2});
+      console.log('initial fontSize: ' + this.state.fontSize);
     })
   }
 
@@ -163,12 +179,12 @@ export default class FittedText extends Component {
 
 FittedText.propTypes = {
   targetHeight: React.PropTypes.number.isRequired,
-  minFillRatio: React.PropTypes.number,
+  epsilon: React.PropTypes.number,
   initialFontSize: React.PropTypes.number
 };
 
 
 FittedText.defaultProps = {
-  minFillRatio: .95,
+  epsilon: .1,
   initialFontSize: 100
 };
