@@ -1,6 +1,6 @@
 {
   "name": "react-native-fittedtext",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A React Native text component that sets its fontSize to fill a target height.",
   "main": "index.js",
   "repository": {
