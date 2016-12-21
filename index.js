@@ -30,10 +30,6 @@ const makeCancelable = (promise) => {
 };
 
 
-const isNearlyEqual = (a, b, epsilon) => {
-  return (a < b + epsilon) && (a > b - epsilon);
-}
-
 export default class FittedText extends Component {
   constructor(props) {
     super(props);
@@ -43,9 +39,9 @@ export default class FittedText extends Component {
       promises: [],
       isFitted: false,
       fontSize: props.initialFontSize,
-      interval: 0,
+      step: 0,
       bestSeenFontSize: 0,
-      bestSeenHeight: -1
+      bestSeenHeight: 0
     };
   }
 
@@ -83,28 +79,22 @@ export default class FittedText extends Component {
         });
       }
 
-      // Binary search to find a fitting fontSize.
-      let newFontSize;
-      if (height < this.props.targetHeight) {
-        newFontSize = this.state.fontSize + this.state.interval;
-      } else if (height > this.props.targetHeight) {
-        newFontSize = this.state.fontSize - this.state.interval;
-      }
-
-      if (isNearlyEqual(
-              newFontSize, this.state.fontSize, this.props.epsilon)) {
+      // Test for the base case.
+      if (this.state.step < this.props.epsilon) {
         this.setState({
           fontSize: this.state.bestSeenFontSize,
           isFitted: true
         });
-        return;  // Base case.
+        return;
       }
 
+      // Binary search for the best fontSize.
+      const direction = height < this.props.targetHeight ? 1 : -1;
+      const newFontSize = this.state.fontSize + this.state.step * direction;
       this.setState({
         fontSize: newFontSize,
-        interval: this.state.interval / 2
+        step: this.state.step / 2
       });
-
       return this.findFit();
     }).catch(e => {
       if (!e.isCanceled) {
@@ -115,15 +105,14 @@ export default class FittedText extends Component {
 
   findUpperBound() {
     return this.getComputedHeightPromise().then(height => {
-      // Double until the targetHeight is exceeded.
-      if (height < this.props.targetHeight) {
-        this.setState({fontSize: this.state.fontSize * 2});
-        return this.findUpperBound();
+      if (height > this.props.targetHeight) {
+        this.setState({step: this.state.fontSize / 2});
+        return;
       }
 
-      // Then initialize the adjustment interval.
-      this.setState({interval: this.state.fontSize / 2});
-      console.log('initial fontSize: ' + this.state.fontSize);
+      // Double the fontSize until the targetHeight is exceeded.
+      this.setState({fontSize: this.state.fontSize * 2});
+      return this.findUpperBound();
     })
   }
 
