@@ -57,10 +57,11 @@ export default class FittedText extends Component {
   }
 
   render() {
+    const color = (this.props.style && this.props.style.color) || 'black';
     const styleOverrides = {
       backgroundColor: 'transparent',
       fontSize: this.state.fontSize,
-      color: this.state.isFitted ? this.props.style.color : 'transparent'
+      color: this.state.isFitted ? color : 'transparent'
     };
     return (
       <Text ref={component => this.innerText = component}
