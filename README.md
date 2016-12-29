@@ -1,4 +1,9 @@
-A React Native text component that sets its fontSize to fill a target height.
+A React Native text component that asynchronously sets its `fontSize`
+to fill a target height.
+
+
+Example usage:
+
 
     import React, { Component } from 'react';
     import { AppRegistry, Dimensions, Text, View } from 'react-native';
@@ -16,3 +21,9 @@ A React Native text component that sets its fontSize to fill a target height.
     }
 
     AppRegistry.registerComponent('FittedExample', () => FittedExample);
+
+
+Example result:
+
+
+![iOS Screenshot](/ios-screenshot.png)
