@@ -1,4 +1,4 @@
-# react-native-fittedtext
+# react-native-fittedtext [![Build Status](https://travis-ci.org/maxh/react-native-fittedtext.svg?branch=master)](https://travis-ci.org/maxh/react-native-fittedtext) [![npm version](https://badge.fury.io/js/react-native-fittedtext.svg)](https://badge.fury.io/js/react-native-fittedtext)
 
 A React Native text component that sets its `fontSize` to fill a target height.
 
