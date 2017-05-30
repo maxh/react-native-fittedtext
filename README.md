@@ -8,6 +8,17 @@ A React Native text component that sets its `fontSize` to fill a target height.
 npm install react-native-fittedtext --save
 ```
 
+```sh
+# Install nvm
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+
+# This install process configures NVM_DIR in your .bashrc, which is needed for deployment.
+# Locally, you'll need the same tools, so add them to your .bash_profile.
+echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bash_profile
+echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' >> ~/.bash_profile
+source ~/.bash_profile
+```
+
 ## Usage
 
 ```jsx
