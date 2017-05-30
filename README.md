@@ -4,7 +4,7 @@ A React Native text component that sets its `fontSize` to fill a target height.
 
 ## Installation
 
-```
+```sh
 npm install react-native-fittedtext --save
 ```
 
